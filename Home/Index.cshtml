@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Rent A Car";
+}
+
+<div class="car">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="titlepage">
+                    <h2>OUR FLEET</h2>
+                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 padding_leri">
+                <div class="car_box">
+                    <figure><img src="~/images/car_img1.png" alt="#" /></figure>
+                    <h3>Hundai</h3>
+                </div>
+            </div>
+            <div class="col-md-4 padding_leri">
+                <div class="car_box">
+                    <figure><img src="~/images/car_img2.png" alt="#" /></figure>
+                    <h3>Audi</h3>
+                </div>
+            </div>
+            <div class="col-md-4 padding_leri">
+                <div class="car_box">
+                    <figure><img src="~/images/car_img3.png" alt="#" /></figure>
+                    <h3>Bmw x5</h3>
+                </div>
+            </div>
+
+            <div class="sign_btn">
+                <a href="@Url.Action("Car_List", "Home")">Explore All</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="contact" class="bestCar">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-md-6 offset-md-6">
+                        <form class="main_form">
+                            <div class="titlepage">
+                                <h2>Start a Car Reservation</h2>
+                            </div>
+                            <div class="row">
+                                <!-- Car Make Dropdown -->
+                                <div class="col-md-12 ">
+                                    <select id="CarMake" name="CarMake">
+                                        <option value="0">Choose car Make</option>
+                                        @foreach (var make in (List<string>)ViewData["CarMakes"])
+                                        {
+                                            <option value="@make">@make</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <select id="CarModel" name="CarModel">
+                                        <option value="0">Choose Car Model</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <select id="CarType" name="CarType">
+                                        <option value="0">Choose Car Type</option>
+                                        @foreach (var type in (List<RentoFull.Models.Type>)ViewData["CarTypes"])
+                                        {
+                                            <option value="@type">@type</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <button class="find_btn">Find The Best Car</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Car Make seçildiğinde Car Model dropdown'ını güncelleme
+            $("#CarMake").change(function () {
+                var selectedMake = $(this).val();
+                if (selectedMake !== "0") {
+                    // AJAX isteği gönderme
+                    $.getJSON('@Url.Action("GetCarModelsByMake", "Home")', { make: selectedMake }, function (data) {
+                        var modelDropdown = $("#CarModel");
+                        modelDropdown.empty();  // Önceki seçenekleri temizle
+                        modelDropdown.append("<option value='0'>Choose Car Model</option>");
+                        // Yeni modelleri ekle
+                        $.each(data, function (index, car) {
+                            modelDropdown.append("<option value='" + car.ID + "'>" + car.Model + "</option>");
+                        });
+                    });
+                } else {
+                    // CarMake sıfır seçildiğinde CarModel dropdown'ını temizle
+                    $("#CarModel").empty();
+                    $("#CarModel").append("<option value='0'>Choose Car Model</option>");
+                }
+            });
+        });
+    </script>
+}

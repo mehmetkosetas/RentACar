@@ -1,0 +1,133 @@
+﻿@model IEnumerable<RentoFull.Models.Car>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Our Fleet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #0000FF;
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .car-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .car-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+            .car-info h3 {
+                margin: 0;
+                font-size: 18px;
+                color: #000;
+            }
+
+            .car-info .year {
+                color: #FFA500;
+                font-size: 14px;
+            }
+
+            .car-info .status {
+                font-size: 14px;
+                font-weight: bold;
+                font-family: Arial, sans-serif;
+            }
+
+                .car-info .status.available {
+                    color: green;
+                }
+
+                .car-info .status.unavailable {
+                    color: red;
+                }
+
+        .car-image {
+            text-align: right;
+        }
+
+            .car-image img {
+                width: 120px;
+                height: auto;
+                border-radius: 5px;
+            }
+
+        .car-actions .button {
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: #FFC107;
+            color: #000;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 20px;
+            text-align: center;
+            display: inline-block;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .car-actions .button:hover {
+                background-color: #FFB000;
+            }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header">
+            <div class="container">
+                <h1 style="text-align:left">Explore Our Fleet</h1>
+                @if (Model == null || !Model.Any())
+                {
+                    <p>No cars available to display.</p>
+                }
+                else
+                {
+                    foreach (var car in Model)
+                    {
+                        <div class="car-item">
+                            <div class="car-info">
+                                <h3> @car.Maker @car.Model</h3>
+                                <p class="year">@car.Year</p>
+                                <p class="status @(car?.CAvailable == true ? "available" : "unavailable")">
+                                    @(car?.CAvailable == true ? "Car is Available" : "Car is Not Available")
+                                </p>
+                            </div>
+                            <div class="car-image">
+                                <img src="~/images/Cars/@(car?.CImage ?? "default.jpg")" alt="@car?.Maker @car?.Model">
+                            </div>
+                            <div class="car-actions">
+                                <a href="@Url.Action("Car_Info", "Home", new { id = car?.ID })" class="button">Car Information</a>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </header>
+</body>
+</html>

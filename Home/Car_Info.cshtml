@@ -1,0 +1,135 @@
+﻿@model RentoFull.Models.Car 
+
+@{
+    ViewData["Title"] = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #000;
+        }
+
+        .car-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .car-details {
+            padding: 20px;
+        }
+
+
+        .car-info p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .car-info strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .car-info .price {
+            color: green;
+            font-weight: bold;
+        }
+
+        .car-info .reserved {
+            font-weight: bold;
+        }
+
+            .car-info .reserved .available {
+                color: green;
+            }
+
+            .car-info .reserved .unavailable {
+                color: red;
+            }
+
+        .reservation-button {
+            display: inline-block;
+            width: 250px;
+            margin: 20px auto;
+            padding: 12px 0;
+            font-size: 18px;
+            color: #000;
+            background-color: #FFD700;
+            text-align: center;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+            .reservation-button:hover {
+                background-color: #FFB000;
+            }
+
+        .navigation-links {
+            display: flex;
+            justify-content: flex-start;
+            gap: 40px;
+            margin-top: 20px;
+        }
+
+            .navigation-links a {
+                color: #0000FF;
+                text-decoration: none;
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+                .navigation-links a:hover {
+                    text-decoration: underline;
+                }
+    </style>
+</head>
+<body>
+
+    <!-- Big Scale Car Image -->
+    <div class="car-image">
+        <img src="~/images/Cars/@(Model?.CImage ?? "default.jpg")" alt="@Model?.Maker @Model?.Model">
+    </div>
+
+    <!-- Araç Detayları -->
+    <div class="car-details">
+        <div class="car-info">
+            <p><strong style="color:darkred;">Maker:</strong> @Model.Maker</p>
+            <p><strong style="color:darkred">Model:</strong> @Model.Model</p>
+            <p><strong style="color:darkred">Year:</strong> @Model.Year</p>
+            <p><strong style="color:darkred">Type:</strong> @Model.CType</p>
+            <p><strong style="color:darkred">Price:</strong> <span class style="color:black" ="price">$@Model.Price per day</span></p>
+            <p class="reserved">
+                <strong style="color:darkred">Reserved:</strong>
+                <span class="@(Model?.CAvailable == true ? "available" : "unavailable")">
+                    @(Model?.CAvailable == true ? "No, Reserve it now" : "Yes, please try again later")
+                </span>
+            </p>
+        </div>
+
+        <!-- Reservation button appears if car available. -->
+        @if (Model?.CAvailable == true)
+        {
+            <button class="reservation-button">Reservation</button>
+        }
+
+
+        <div class="navigation-links">
+            <a href="@Url.Action("Car_List", "Home")">Back to List</a>
+            <a href="@Url.Action("Index", "Home")">Back to Home</a>
+        </div>
+    </div>
+
+</body>
+</html>
